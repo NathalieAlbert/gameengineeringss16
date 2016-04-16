@@ -183,43 +183,46 @@ namespace Fusee.Tutorial.Core
             var projection = float4x4.CreatePerspectiveFieldOfView(3.141592f * 0.25f, aspectRatio, 0.01f, 20);
             var view = float4x4.CreateTranslation(0, 0, 3);
 
-        
 
 
 
-               // First cube
-         var cube1Model = ModelXForm(new float3(-0.6f, 0, 0), new float3(_pitchCube1, _yawCube1, 0), new float3(0, 0, 0));
-         _xform = projection * view * cube1Model * float4x4.CreateScale(0.5f, 0.1f, 0.1f);
-            RC.SetShaderParam(_xformParam, _xform);
-          RC.Render(_mesh);
 
-            // SBeseplatte
-            var cube2Model = ModelXForm(new float3(0.6f, 0, 0), new float3(_pitchCube1, _yawCube1, 0), new float3(0, 0, 0));
-            _xform = projection * view * cube1Model * cube2Model * float4x4.CreateScale(0.5f, 0.5f, 0.1f);
+            // Platte
+            var cube1Model = ModelXForm(new float3(0, -0.6f, 0), new float3(0, 0.6f, 0), new float3(0, 0, 0));
+            _xform = projection * view *
+                cube1Model * 
+                float4x4.CreateScale(0.4f, 0.06f, 0.4f);
             RC.SetShaderParam(_xformParam, _xform);
             RC.Render(_mesh);
 
-
-            // Second cube
-            var cube3Model = ModelXForm(new float3(0.6f, 0, 0), new float3(_pitchCube2, _yawCube2, 0), new float3(0, 0, 0));
-            _xform = projection * view * cube1Model * cube3Model * float4x4.CreateScale(0.5f, 0.1f, 0.1f);
+            // Base
+            var cube2Model = ModelXForm(new float3(0f, -0.1f, 0), new float3(0, _yawCube1, 0), new float3(0, 0, 0));
+            _xform = projection * view * 
+                cube2Model *
+                float4x4.CreateScale(0.06f, 0.6f, 0.06f);
             RC.SetShaderParam(_xformParam, _xform);
             RC.Render(_mesh);
 
-          
-            var cube4Model = ModelXForm(new float3(0.6f, 0, 0), new float3(_pitchCube1, _yawCube1, 0), new float3(0, 0, 0));
-            _xform = projection * view * cube1Model * cube3Model * cube4Model * float4x4.CreateScale(0.5f, 0.1f, 0.1f);
+            // Upper Arm
+            var cube3Model = ModelXForm(new float3(-0.21f, 0.54f, 0.12f), new float3(0, 0, _pitchCube1), new float3(0.25f, 0, 0));
+            _xform = projection *view * 
+                cube2Model * cube3Model * 
+                float4x4.CreateScale(0.3f, 0.07f, 0.07f);
             RC.SetShaderParam(_xformParam, _xform);
             RC.Render(_mesh);
 
+            // Forearm
+            var cube4Model = ModelXForm(new float3(-0.45f, 0, 0.1f), new float3(0, 0, _pitchCube2), new float3(0.25f, 0, 0));
+            _xform = projection * view * 
+                cube2Model * cube3Model * cube4Model * 
+                float4x4.CreateScale(0.3f, 0.07f, 0.07f);
+            RC.SetShaderParam(_xformParam, _xform);
+            RC.Render(_mesh);
 
-
-
-
-
-
-            // Swap buffers: Show the contents of the backbuffer (containing the currently rendered farame) on the front buffer.
+            
             Present();
+
+
         }
 
         static float4x4 ModelXForm(float3 pos, float3 rot, float3 pivot)
